@@ -1,0 +1,36 @@
+import plotly.graph_objects as go
+
+def generate_project_figure(data, horizontal_spacing=1.5, vertical_spacing=1.5, circle_size=20):
+    projects = list(data.items())
+    num_rows = (len(projects) - 1) // 9 + 1  # Calculate number of rows needed
+    fig = go.Figure()
+
+    for index, (project_name, details) in enumerate(projects):
+        row = index // 9
+        col = index % 9
+
+        # Calculate positions based on spacing parameters
+        x_position = col * horizontal_spacing
+        y_position = -row * vertical_spacing
+
+        fig.add_trace(go.Scatter(
+            x=[x_position],
+            y=[y_position],
+            mode='markers+text',
+            marker=dict(size=circle_size, color='green' if details['status'] == 'Green' else 'red'),
+            text=project_name,
+            textposition='top center',  # Position text above the circle
+            hovertext=details['tooltip'],  # Tooltip text for hover
+            hoverinfo='text'
+        ))
+
+    # Adjust layout for the calculated grid size
+    fig.update_layout(
+        showlegend=False,
+        xaxis=dict(visible=False, range=[-horizontal_spacing, 9 * horizontal_spacing]),
+        yaxis=dict(visible=False, range=[-num_rows * vertical_spacing, vertical_spacing]),
+        margin=dict(t=0, l=0, r=0, b=0),
+        height=(circle_size * 2) * num_rows  # Adjust height based on circle size and number of rows
+    )
+
+    return fig
