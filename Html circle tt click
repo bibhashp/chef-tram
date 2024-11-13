@@ -3,23 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Circle with Clickable Tooltip Links</title>
+    <title>Circle with Persistent Tooltip</title>
     <style>
+        /* Container styling */
+        .tooltip-container {
+            position: relative;
+            display: inline-block;
+            margin: 50px;
+        }
+
         /* Circle styling */
         .circle {
             width: 50px;
             height: 50px;
             background-color: #4CAF50;
             border-radius: 50%;
-            position: relative;
-            display: inline-block;
-            margin: 50px;
             cursor: pointer;
         }
 
         /* Tooltip styling */
         .tooltip {
-            visibility: hidden;
+            display: none;
             width: 150px;
             background-color: #333;
             color: #fff;
@@ -30,17 +34,12 @@
             bottom: 70px;
             left: 50%;
             transform: translateX(-50%);
-            opacity: 0;
-            transition: opacity 0.3s;
-            pointer-events: none; /* Prevents hover flickering */
+            z-index: 1;
         }
 
-        /* Show the tooltip on hover */
-        .circle:hover .tooltip,
-        .tooltip:hover {
-            visibility: visible;
-            opacity: 1;
-            pointer-events: auto; /* Allows clicks on tooltip content */
+        /* Show tooltip on hover over the container */
+        .tooltip-container:hover .tooltip {
+            display: block;
         }
 
         /* Optional arrow */
@@ -68,7 +67,8 @@
 </head>
 <body>
 
-    <div class="circle">
+    <div class="tooltip-container">
+        <div class="circle"></div>
         <div class="tooltip">
             <p>Click here:</p>
             <a href="https://example.com" target="_blank">Example Link 1</a><br>
